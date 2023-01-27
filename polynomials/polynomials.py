@@ -1,3 +1,6 @@
+from numbers import Number
+
+
 class Polynomial:
     def __init__(self, coefs):
         self.coefficients = coefs
@@ -17,7 +20,7 @@ class Polynomial:
     def __add__(self, other):
         if isinstance(other, Number):
             return Polynomial((self.coefficients[0]+other,) + self.coefficients[1:])
-        if isinstance(other, Polynomial):
+        elif isinstance(other, Polynomial):
             common = min(self.degree, other.degree)+1
             coefs = tuple(a+b for a, b in zip(self.coefficients[:common], other.coefficients[:common]))
             coefs += self.coefficients[common:] + other.coefficients[common:]
@@ -29,4 +32,5 @@ class Polynomial:
         return self + other
 
     def __call__(self, value):
-        return 1
+        result = [a*value**d for d, a in enumerate(self.coefficients)]
+        return sum(result)
